@@ -73,12 +73,17 @@ class _LabPageState extends State<LabPage> {
                           Flexible(
                             child: TextField(
                               controller: _tempTextController,
-                              decoration: const InputDecoration(suffixText: '°C'),
-                              onSubmitted: (value) =>
-                                  context.read<TemperatureModel>().temperature = double.parse(value),
-                              keyboardType: const TextInputType.numberWithOptions(signed: true),
+                              decoration:
+                                  const InputDecoration(suffixText: '°C'),
+                              onSubmitted: (value) => context
+                                  .read<TemperatureModel>()
+                                  .temperature = double.parse(value),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true),
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp('-*[0-9]*')),
+                                FilteringTextInputFormatter.allow(
+                                    RegExp('-*[0-9]*')),
                               ],
                               textAlign: TextAlign.end,
                             ),
@@ -87,7 +92,8 @@ class _LabPageState extends State<LabPage> {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          context.read<TemperatureModel>().temperature = double.parse(_tempTextController.text);
+                          context.read<TemperatureModel>().temperature =
+                              double.parse(_tempTextController.text);
                         },
                         child: const Text('Confirm'),
                       ),
@@ -96,6 +102,7 @@ class _LabPageState extends State<LabPage> {
                         child: Text(
                           '${context.watch<TemperatureModel>().temperature}°C',
                           maxLines: 1,
+                          key: ValueKey('temperatureText'),
                           style: const TextStyle(
                             fontSize: 36,
                             fontFamily: 'VCR_OSD_Mono',
@@ -103,6 +110,13 @@ class _LabPageState extends State<LabPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      Row(children: [
+                        OutlineButton(
+                          onPressed: () =>
+                              context.read<TemperatureModel>().increment(),
+                          child: const Text('+5'),
+                        ),
+                      ]),
                     ],
                   ),
                 ),
