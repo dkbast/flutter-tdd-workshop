@@ -111,11 +111,16 @@ class _LabPageState extends State<LabPage> {
                       ),
                       const SizedBox(height: 20),
                       Row(children: [
-                        OutlineButton(
+                        TextButton(
                           onPressed: () =>
                               context.read<TemperatureModel>().increment(),
                           child: const Text('+5'),
                         ),
+                        TextButton(
+                          onPressed: () =>
+                              context.read<TemperatureModel>().decrement(),
+                          child: Text('-5'),
+                        )
                       ]),
                     ],
                   ),

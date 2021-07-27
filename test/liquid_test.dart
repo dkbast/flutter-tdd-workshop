@@ -47,8 +47,22 @@ void main() {
     final tempTextFinder = find.byKey(const ValueKey('temperatureText'));
     expect(tempTextFinder, findsOneWidget);
     final tempText = tester.widget<Text>(tempTextFinder);
-    expect(tempText.data,
-        '${(TemperatureModel.initialValue + TemperatureModel.stepWidth).toString()}°C');
+    expect(tempText.data, '24.0°C');
+  });
+
+  testWidgets('tap decrement decreases temperature by 5', (tester) async {
+    await tester.pumpWidget(LabApp());
+
+    final decrementFinder = find.text('-5');
+    expect(decrementFinder, findsOneWidget);
+
+    await tester.tap(decrementFinder);
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
+    final tempTextFinder = find.byKey(const ValueKey('temperatureText'));
+    expect(tempTextFinder, findsOneWidget);
+    final tempText = tester.widget<Text>(tempTextFinder);
+    expect(tempText.data, '14.0°C');
   });
 }
 
