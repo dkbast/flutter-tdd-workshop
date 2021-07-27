@@ -32,6 +32,7 @@ class HazardousLiquid extends StatelessWidget {
                         bottomRight: Radius.circular(35),
                       ),
                       child: Container(
+                        key: const ValueKey('hazardousLiquidContainer'),
                         color: color,
                         height: height,
                         width: 84,
@@ -86,7 +87,8 @@ class HazardousLiquid extends StatelessWidget {
   double _calculateExpansion(double temperature) {
     const baseTemperatureExpansionCalculation = 26;
 
-    final range = (500 * temperature * temperature + baseTemperatureExpansionCalculation) /
+    final range = (500 * temperature * temperature +
+            baseTemperatureExpansionCalculation) /
         (500 * 85 * 85 + baseTemperatureExpansionCalculation);
     return math.max(0, math.min(1, range));
   }

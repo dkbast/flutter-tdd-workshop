@@ -4,7 +4,8 @@ import 'package:liquid_simulation/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-final Finder liquidFinder = find.descendant(of: find.byType(HazardousLiquid), matching: find.byType(Container));
+final Finder liquidFinder = find.descendant(
+    of: find.byType(HazardousLiquid), matching: find.byType(Container));
 
 void main() {
   testWidgets('Starts with 19.0°C', (tester) async {
@@ -12,20 +13,41 @@ void main() {
     expect(find.text('19.0°C'), findsOneWidget);
   });
 
-  testWidgets('74.0°C is orange', (tester) async {
-    await tester.pumpWidget(LabApp());
+  final testMap = {
+    -1: 0xff1f3dff,
+    9: 0xff1f88ff,
+    17: 0xff20bbe6,
+    25: 0xff24ebf2,
+    39: 0xff1ddb99,
+    50: 0xff1ec943,
+    58: 0xff5da82a,
+    73: 0xffc2c240,
+    83: 0xffffac26,
+    85: 0xffff4400,
+  };
+  for (final entrySet in testMap.entries) {
+    testWidgets('$entrySet.key°C is ${entrySet.value}', (tester) async {
+      await testTemperature(
+          entrySet.key.toDouble(), Color(entrySet.value), tester);
+    });
+  }
+}
 
-    // TODO change input to 74.0°C
-    expect(find.byType(TextField), findsOneWidget);
-    // see what `find` offers
+Future<void> testTemperature(
+    double temperature, Color color, WidgetTester tester) async {
+  await tester.pumpWidget(LabApp());
+  expect(find.byType(TextField), findsOneWidget);
+  await tester.enterText(
+      find.byType(TextField), temperature.toInt().toString());
 
-    // TODO wait 5 seconds
-    // see what `tester` offers
+  await tester.tap(find.text('Confirm'));
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  final containerFinder =
+      find.byKey(const ValueKey('hazardousLiquidContainer'));
 
-    // check if the liquid color is orange
-    expect(find.byType(Container), findsOneWidget);
-    final container = tester.widget<Container>(find.byType(Container));
+  expect(containerFinder, findsOneWidget);
 
-    expect(container.color, const Color(0xffffac26));
-  });
+  final container = tester.widget<Container>(containerFinder);
+
+  expect(container.color, color);
 }
