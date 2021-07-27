@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TemperatureModel extends ChangeNotifier {
-  double _temperature = 19;
+  static const stepWidth = 5;
+  static const initialValue = 19.0;
+  double _temperature = initialValue;
 
   double get temperature => _temperature;
 
@@ -12,17 +14,13 @@ class TemperatureModel extends ChangeNotifier {
 
   /// Increases the [temperature] by 5º
   void increment() {
-    // TODO 1. write test
-    // TODO 2. implement
-    // TODO 3. commit
+    _temperature += stepWidth;
     notifyListeners();
   }
 
   /// Decreases the [temperature] by 5º
   void decrement() {
-    // TODO 1. write test
-    // TODO 2. implement
-    // TODO 3. commit
+    _temperature -= stepWidth;
     notifyListeners();
   }
 }
